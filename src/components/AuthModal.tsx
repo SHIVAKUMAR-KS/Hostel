@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Mail, Phone, Eye, EyeOff } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import OTPVerificationModal from "./OTPVerificationModal";
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -17,6 +19,7 @@ const AuthModal = ({ isOpen, onClose, initialMode = "signin" }: AuthModalProps) 
   const [mode, setMode] = useState<"signin" | "register">(initialMode);
   const [authType, setAuthType] = useState<"email" | "phone">("email");
   const [showPassword, setShowPassword] = useState(false);
+  const [showOTPModal, setShowOTPModal] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     phone: "",
@@ -26,6 +29,7 @@ const AuthModal = ({ isOpen, onClose, initialMode = "signin" }: AuthModalProps) 
   });
   const [otpSent, setOtpSent] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -55,11 +59,8 @@ const AuthModal = ({ isOpen, onClose, initialMode = "signin" }: AuthModalProps) 
 
   const handlePhoneAuth = () => {
     if (!otpSent) {
-      setOtpSent(true);
-      toast({
-        title: "OTP Sent",
-        description: `Verification code sent to ${formData.phone}`,
-      });
+      // Show OTP verification modal
+      setShowOTPModal(true);
     } else {
       toast({
         title: "Phone Verified",
@@ -67,6 +68,15 @@ const AuthModal = ({ isOpen, onClose, initialMode = "signin" }: AuthModalProps) 
       });
       onClose();
     }
+  };
+
+  const handleOTPVerificationSuccess = () => {
+    setOtpSent(true);
+    toast({
+      title: "Phone Verified",
+      description: "Welcome to Hoomora!",
+    });
+    onClose();
   };
 
   const resetForm = () => {
@@ -79,6 +89,7 @@ const AuthModal = ({ isOpen, onClose, initialMode = "signin" }: AuthModalProps) 
     });
     setOtpSent(false);
     setShowPassword(false);
+    setShowOTPModal(false);
   };
 
   const switchMode = () => {
@@ -251,7 +262,7 @@ const AuthModal = ({ isOpen, onClose, initialMode = "signin" }: AuthModalProps) 
                 className="w-full h-12 text-base gradient-button"
                 onClick={authType === "email" ? handleEmailAuth : handlePhoneAuth}
               >
-                {authType === "email" 
+                {authType === "email"
                   ? (mode === "signin" ? "Sign In" : "Create Account")
                   : (otpSent ? "Verify OTP" : "Send OTP")
                 }
@@ -272,8 +283,8 @@ const AuthModal = ({ isOpen, onClose, initialMode = "signin" }: AuthModalProps) 
           {/* Right Side - Illustration */}
           <div className="hidden md:block relative bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-950 dark:to-orange-900">
             <div className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center">
-              <img 
-                src="src/assets/auth-illustration.jpg" 
+              <img
+                src="src/assets/auth-illustration.jpg"
                 alt="Hostel Community Illustration"
                 className="w-full h-auto max-w-lg rounded-lg shadow-lg mb-6"
               />
@@ -294,6 +305,12 @@ const AuthModal = ({ isOpen, onClose, initialMode = "signin" }: AuthModalProps) 
           </div>
         </div>
       </DialogContent>
+      <OTPVerificationModal
+        isOpen={showOTPModal}
+        onClose={() => setShowOTPModal(false)}
+        phoneNumber={formData.phone}
+        onVerificationSuccess={handleOTPVerificationSuccess}
+      />
     </Dialog>
   );
 };
