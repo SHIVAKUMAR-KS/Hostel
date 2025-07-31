@@ -8,6 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import { Mail, Phone, Eye, EyeOff } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import OTPVerificationModal from "./OTPVerificationModal";
+import authIllustration from "../assets/auth-illustration.jpg";
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -284,7 +285,7 @@ const AuthModal = ({ isOpen, onClose, initialMode = "signin" }: AuthModalProps) 
           <div className="hidden md:block relative bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-950 dark:to-orange-900">
             <div className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center">
               <img
-                src="src/assets/auth-illustration.jpg"
+                src={authIllustration}
                 alt="Hostel Community Illustration"
                 className="w-full h-auto max-w-lg rounded-lg shadow-lg mb-6"
               />
