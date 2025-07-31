@@ -28,11 +28,10 @@ const Navigation = ({ onSignIn }: NavigationProps) => {
     <Link
       to={path}
       onClick={() => mobile && setIsOpen(false)}
-      className={`flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-        isActive(path) 
-          ? "bg-primary text-primary-foreground shadow-lg" 
+      className={`flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${isActive(path)
+          ? "bg-primary text-primary-foreground shadow-lg"
           : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-      } ${mobile ? 'w-full justify-start' : ''}`}
+        } ${mobile ? 'w-full justify-start' : ''}`}
     >
       <Icon className="h-4 w-4" />
       <span>{label}</span>
@@ -45,7 +44,7 @@ const Navigation = ({ onSignIn }: NavigationProps) => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-0 flex-shrink-0">
-            <img 
+            <img
               src={Nav_Logo}
               alt="Logo"
               className="w-12 h-14"
@@ -65,8 +64,8 @@ const Navigation = ({ onSignIn }: NavigationProps) => {
 
           {/* Desktop Auth Button */}
           <div className="hidden lg:flex items-center">
-            <Button 
-              className="gradient-button shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300" 
+            <Button
+              className="gradient-button shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
               onClick={() => navigate("/register")}
             >
               Get Started
@@ -83,29 +82,29 @@ const Navigation = ({ onSignIn }: NavigationProps) => {
               </SheetTrigger>
               <SheetContent side="right" className="w-80">
                 <SheetHeader className="pb-6">
-                <SheetTitle className="text-left">
-                      <div className="flex items-center space-x-0">
-                        <img
-                          src={Nav_Logo}
-                          alt="Logo"
-                          className="w-8 h-10"
-                        />
-                        <span className="ml-2 text-2xl font-bold font-poppins bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                          Hoomora
-                        </span>
-                      </div>
-                    </SheetTitle>
+                  <SheetTitle className="text-left">
+                    <div className="flex items-center space-x-0">
+                      <img
+                        src={Nav_Logo}
+                        alt="Logo"
+                        className="w-8 h-10"
+                      />
+                      <span className="ml-2 text-2xl font-bold font-poppins bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                        Hoomora
+                      </span>
+                    </div>
+                  </SheetTitle>
 
                 </SheetHeader>
-                
+
                 <div className="flex flex-col space-y-4">
                   {navItems.map((item) => (
                     <NavLink key={item.path} {...item} mobile />
                   ))}
-                  
+
                   <div className="pt-6 border-t">
-                    <Button 
-                      className="w-full gradient-button" 
+                    <Button
+                      className="w-full gradient-button"
                       onClick={() => {
                         navigate("/register");
                         setIsOpen(false);
